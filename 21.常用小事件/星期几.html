@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style type="text/css">
+        html{
+            overflow: hidden;
+        }
+        body{
+            width: 1000px;
+            height: 500px;
+            overflow-y: auto;
+            background: sandybrown;
+        }
+        .week li{
+            height: 300px;
+            line-height: 300px;
+            background: rebeccapurple;
+        }
+    </style>
+    <script src="jquery-1.10.2.min.js"></script>
+    <script src="echarts.js"></script>
+</head>
+<body id="odd">
+<div class="week" style="height: 1000px"><ul class="ad"><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li></ul></div>
+<script>
+    var date = new Date('1509963533');
+    var weekDay = ["星期天", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六"];
+    var year = date.getFullYear();
+    var month = date.getMonth()+1;
+    var day = date.getDate();
+    var week = weekDay[date.getDay()];
+    $('.week').html(week);
+    var $body = $('body');
+    console.log($body);
+    $body.off('scroll').on('scroll', function (event) {
+        var scroll_position, window_height;
+        var $li = '<li style="background: royalblue"></li>',$ul = $('.ad');
+        $ul.append($li);
+        console.log('1');
+    });
+</script>
+</body>
+</html>

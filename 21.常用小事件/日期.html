@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="jquery-1.10.2.min.js"></script>
+</head>
+<body>
+<div class="time"></div>
+<script>
+    function formatDate(date,split) {
+        var split = split ? split : '';
+        var year = date.getFullYear();
+        var month = date.getMonth() + 1;
+        var day = date.getDate();
+        if (month < 10) {
+            month = "0" + month;
+        }
+        if (day < 10) {
+            day = "0" + day;
+        }
+        return [year,month,day].join(split);
+    }
+    function getrhtee() {
+        var date,beforeTwo,newDateTwo,newDate,beforeOne,twoDayDate,oneDayDate,todayDate,twoAgoDay,oneAgoDay,today,args = {};
+
+        date = new  Date();
+        today = date.getDate();
+
+        beforeTwo = date-2*1000*60*60*24;
+        beforeOne = date-1*1000*60*60*24;
+
+        newDateTwo = new Date(beforeTwo);
+        newDate = new Date(beforeOne);
+        twoAgoDay = newDateTwo.getDate();
+        oneAgoDay = newDate.getDate();
+
+        todayDate = formatDate(date);
+        twoDayDate = formatDate(newDateTwo);
+        oneDayDate = formatDate(newDate);
+        args = {
+            today:today,
+            oneAgoDay:oneAgoDay,
+            twoAgoDay:twoAgoDay,
+            todayDate:todayDate,
+            oneDayDate:oneDayDate,
+            twoDayDate:twoDayDate
+        };
+        return args;
+    };
+    function getLastWeekStartDate() {
+        var now = new Date(); //当前日期
+        var nowDayOfWeek = now.getDay(); //今天本周的第几天
+        var nowDay = now.getDate(); //当前日
+        var nowMonth = now.getMonth(); //当前月
+        var nowYear = now.getYear(); //当前年
+        nowYear += (nowYear < 2000) ? 1900 : 0; //
+        var weekStartDate = new Date(nowYear, nowMonth, nowDay - nowDayOfWeek - 6);
+        var weekEndDate = new Date(nowYear, nowMonth, nowDay - nowDayOfWeek);
+        var weekdDate = new Date(nowYear, nowMonth, nowDay - nowDayOfWeek+1);
+
+        return formatDate(weekStartDate)+formatDate(weekEndDate)+formatDate(weekdDate);
+    }
+    $('.time').html(getLastWeekStartDate());
+</script>
+</body>
+</html>

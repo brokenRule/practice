@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>拖拽</title>
+    <style type="text/css">
+        #container{
+            width: 100px;
+            height: 100px;
+            background: red;
+        }
+    </style>
+    <script src="jquery-1.10.2.min.js"></script>
+</head>
+<body>
+<div id="container"></div>
+<script>
+  var   configMap= {
+        java_handler_addr: 'http://iyingdi.gonlan.com/',
+        ifhttps:/https:\/\//.test(window.location.href)? true:false,
+        /*java_handler_addr:'https://www.iyingdi.cn/',	//线上*/
+        /* java_handler_addr:'http://beta.iyingdi.cn/',//线上测试*/
+        destroyBubble:function (event) {
+            event.preventDefault();
+            if (event && event.stopPropagation) {
+                event.stopPropagation();
+            }
+            else {
+                event.cancelBubble = true;
+            }
+        },
+    };
+    /*region 拖拽事件*/
+
+    var Drag = function (ele){
+        this.ele = ele;
+        this.l = null;
+        this.t = null;
+
+        var that = this;
+        this.DOWN = function(e){
+            //这里的this是 this.ele,所以要修改this为原构造函数的this
+            that.down.call(that,e)
+        };
+
+        this.ele.onmousedown = this.DOWN;
+        this.MOVE = function(e){ that.move.call(that,e);};
+        this.UP = function(e){ that.up.call(that,e); }
+    };
+
+    Drag.prototype.down = function(e){
+        this.l = e.pageX - this.ele.offsetLeft;
+        this.t = e.pageY - this.ele.offsetTop;
+        //要修改　move 和 up  中的this指向
+        document.onmousemove = this.MOVE;
+        document.onmouseup = this.UP;
+    };
+
+    Drag.prototype.move = function(e){
+        var l = e.pageX - this.l;
+        var t = e.pageY - this.t;
+        this.ele.style.left = l + 'px';
+        this.ele.style.top = t + 'px';
+        e.preventDefault();
+    };
+
+    Drag.prototype.up = function(){
+        document.onmousemove =   document.onmouseup = null;
+    };
+
+    /*endregion*/
+ var  touchOr = function (e) {
+      var originalEvent = e.originalEvent; // 这里要判断移动端多点触控的问题，jquery扩展的event对象没有这个属性
+      var touches = originalEvent.touches;// 获取源生event对象
+      var touch;
+      if(touches){ // 如果有touches属性，则代表是移动端touchmove事件
+          touch = touches[0]; // 取到多个触控点中的第一个，这样才能获取到触控点的对应位置
+      }else{
+          touch = e;
+      }
+      return touch;
+  };
+
+  /*region 拖拽事件*/
+  var touch = function () {
+      var tag = false,ox = 0,oy = 0,left = 0,top = 0,bgleft = 0;
+      var startEvent = 'touchstart';
+      var moveEvent =  'touchmove';
+      var upEvent = 'touchend';
+      $('#againstTable').on(startEvent,function(e) {
+          var touch = touchOr(e);
+          ox = touch.pageX - left;
+          oy = touch.pageY - top;
+          tag = true;
+          configMap.destroyBubble(e);
+      });
+      $('#againstTable').on(upEvent,function() {
+          tag = false;
+      });
+      $('#againstTable').on(moveEvent,function(e) {
+          var touch = touchOr(e);
+          if (tag) {
+              left = touch.pageX - ox;
+              top = touch.pageY - oy;
+              $('#againstTable').css({'left':left,'top':top});
+              configMap.destroyBubble(e);
+          }
+      });
+  };
+  /*endregion*/
+    var ele = document.getElementById('againstTable');
+    new Drag(ele);
+  touch();
+</script>
+</body>
+</html>

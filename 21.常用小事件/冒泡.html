@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>jQuery阻止冒泡</title>
+    <style>
+        .div1{
+            width: 140px;
+            border: 1px solid blue;
+        }
+        .div2{
+            width: 100px;
+            height: 100px;
+            margin: 20px;
+            border: 1px solid red;
+        }
+    </style>
+</head>
+<body>
+<div class="div1">
+    <div class="div2">
+        点我呀！！！！
+    </div>
+</div>
+
+<a href="http:www.baidu.com" id="a1">百度</a>
+
+<script src="http://libs.baidu.com/jquery/2.0.0/jquery.js"></script>
+<script>
+    $('.div1').bind('click',function(){
+        alert("div1");
+    });
+    $('.div2').bind('click',function(){
+        alert("div2");
+//        return false;//也可以通过return false 阻止冒泡
+        if(window.event){//IE下阻止冒泡
+            event.cancelBubble  = true;
+        }else{
+            event.stopPropagation();
+        }
+    });
+    $('#a1').bind('click',function(){
+        if(window.event){//IE下阻止默认事件
+            event.returnValue = false;
+        }else{
+            event.preventDefault();
+        }
+        alert("我是链接");
+        //return false;//如果不添加任何阻止事件，先弹框，后跳转，我们可以通过return false阻止跳转
+    });
+
+</script>
+</body>
+</html>

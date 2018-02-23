@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="jquery-1.10.2.min.js"></script>
+    <style type="text/css">
+        .markLayer{
+            width: 100%;
+            height: 100%;
+            background: black;
+            opacity: 0.3;
+            position: fixed;
+            top:0;
+            left: 0;
+            z-index: 1;
+        }
+        .con{
+            width: 100px;
+            height: 100px;
+            background: red;
+            cursor: pointer;
+            position: absolute;
+            top:50%;
+            left: 50%;
+            margin-left: -50px;
+            margin-top: -50px;
+        }
+        .down{
+            width: 50px;
+            height: 12px;
+            line-height: 12px;
+            font-size: 12px;
+            margin-bottom: 20px;
+            background: lightblue;
+            cursor: pointer;
+            border: 1px solid lightblue;
+            border-radius: 3px;
+            box-shadow:1px 1px 1px 1px lightgray;
+            text-align: center;
+            color: #FFFFFF;
+        }
+        .hide{
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<div class="down">点击</div>
+<div class="markLayer">
+    <div class="con"></div>
+</div>
+<script type="text/javascript">
+    var common = {
+        cancelBubble:function (event) {
+            event.preventDefault();
+            if (event && event.stopPropagation) {
+                event.stopPropagation();
+            }
+            else {
+                event.cancelBubble = true;
+            }
+        }
+    };
+    //region 遮罩层
+    $("div.down").click(function(e){
+        e.stopPropagation();
+        $("div.con").removeClass("hide");
+        $(".markLayer").removeClass("hide");
+    });
+    $(".con").click(function(event){
+        common.cancelBubble(event);
+    });
+    $('.markLayer').click(function (event) {
+        $(this).addClass('hide');
+    });
+    //endregion
+
+</script>
+</body>
+</html>

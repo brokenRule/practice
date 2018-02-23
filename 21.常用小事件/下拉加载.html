@@ -1,0 +1,74 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>完美拖拽</title>
+    <script src="jquery-1.10.2.min.js"></script>
+    <style>
+        .area {
+            width: 400px;
+            height: 200px;
+            border: 1px solid red;
+            overflow: auto;
+        }
+
+        .area > li {
+            border-bottom: 1px solid black;
+        }
+    </style>
+</head>
+
+<body>
+<ul class="area">
+
+</ul>
+</body>
+<script>
+
+    $(function () {
+        var startQuery, page, size, html;
+        html = new String();
+        page = 0;
+        size = 10;
+        startQuery = function (prea) {
+            prea === 'add' ? page += 1 : page = 0;
+            $('.area').off('scroll');
+            $.ajax({
+                type: 'POST',
+                url: 'http://iyingdi.gonlan.com/gwent/card/search/vertical',
+                data: {page: page, size: size},
+                datatype: 'json',
+                success: function (data) {
+                    if (data.success) {
+                        var cards_list, card_index;
+                        cards_list = data.data.cards ? data.data.cards : [];
+                        for (var i in cards_list) {
+                            html += new String()
+                                + '<li>'
+                                + '<h1>' + cards_list[i].cname + '</h1>'
+                                + '</li>';
+                        }
+                        $('.area').append(html);
+                        if (cards_list.length >= size) {
+                            $('.area').on('scroll', function (event) {
+                                var scroll_position, window_height, scroll_height, liheight, $lis;
+                                scroll_position = $('.area').scrollTop();
+                                window_height = $('.area').height();
+                                scroll_height = 0;
+                                $lis = $('.area > li');
+                                for (var i = 0; i < $lis.length; i++) {
+                                    scroll_height += $lis.eq(i).height();
+                                }
+                                if (scroll_position >= scroll_height) {
+                                    startQuery("add");
+                                }
+                                console.log(scroll_position,scroll_height);
+                            });
+                        }
+                    }
+                }
+            });
+        };
+        startQuery('res');
+    });
+</script>
+</html>

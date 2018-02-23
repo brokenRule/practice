@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="jquery-1.10.2.min.js"></script>
+</head>
+<body>
+<script type="text/javascript">
+    function getMax(arr) {
+        var max = arr[0],obj ={};
+        for(var i = 0; i < arr.length; i++) {
+            if(max < arr[i]) {
+                max = arr[i];
+            }
+        }
+        if(max.toString().length<4){
+            obj.max = max;
+            obj.unit = '';
+        }
+        else if(max.toString().length <7){
+            obj.max = parseInt(max)/1000;
+            obj.unit = 'k';
+        }
+        else{
+            obj.max = parseInt(max)/10000;
+            obj.unit = 'w';
+        }
+        return obj;
+    };
+    var str = [10,1000,20000000,3];
+
+    console.log(getMax(str));
+
+
+
+</script>
+</body>
+</html>

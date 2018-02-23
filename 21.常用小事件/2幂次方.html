@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="jquery-1.10.2.min.js"></script>
+</head>
+<body>
+<script>
+    function get(x) {
+        var count =0 ;
+        while(x){
+            count = count & (count-1);
+            count++;
+        }
+        return count;
+    }
+    function log2(value)   //非递归判断一个数是2的多少次方
+    {
+        if (value == 1)
+            return 0;
+        else
+            return 1+log2(value>>1);
+    }
+    console.log(log2(8));
+</script>
+</body>
+</html>
